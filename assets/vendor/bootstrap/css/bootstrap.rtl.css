@@ -7139,7 +7139,7 @@ textarea.form-control-lg {
 }
 
 .visually-hidden,
-.visually-hidden-focusable:not(:focus):not(:focus-within) {
+.visually-hidden-focZAble:not(:focus):not(:focus-within) {
   width: 1px !important;
   height: 1px !important;
   padding: 0 !important;
@@ -7150,7 +7150,7 @@ textarea.form-control-lg {
   border: 0 !important;
 }
 .visually-hidden:not(caption),
-.visually-hidden-focusable:not(:focus):not(:focus-within):not(caption) {
+.visually-hidden-focZAble:not(:focus):not(:focus-within):not(caption) {
   position: absolute !important;
 }
 

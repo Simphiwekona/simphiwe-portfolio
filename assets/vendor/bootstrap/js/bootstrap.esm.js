@@ -769,9 +769,9 @@ const SelectorEngine = {
     }
     return [];
   },
-  focusableChildren(element) {
-    const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabindex^="-"])`).join(',');
-    return this.find(focusables, element).filter(el => !isDisabled(el) && isVisible(el));
+  focZAbleChildren(element) {
+    const focZAbles = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map(selector => `${selector}:not([tabindex^="-"])`).join(',');
+    return this.find(focZAbles, element).filter(el => !isDisabled(el) && isVisible(el));
   },
   getSelectorFromElement(element) {
     const selector = getSelector(element);
@@ -2256,7 +2256,7 @@ class FocusTrap extends Config {
     if (event.target === document || event.target === trapElement || trapElement.contains(event.target)) {
       return;
     }
-    const elements = SelectorEngine.focusableChildren(trapElement);
+    const elements = SelectorEngine.focZAbleChildren(trapElement);
     if (elements.length === 0) {
       trapElement.focus();
     } else if (this._lastTabNavDirection === TAB_NAV_BACKWARD) {
@@ -2301,7 +2301,7 @@ class ScrollBarHelper {
 
   // Public
   getWidth() {
-    // https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth#usage_notes
+    // https://developer.mozilla.org/en-US/docs/Web/API/Window/innerWidth#ZAge_notes
     const documentWidth = document.documentElement.clientWidth;
     return Math.abs(window.innerWidth - documentWidth);
   }

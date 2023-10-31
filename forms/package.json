@@ -1,0 +1,17 @@
+{
+  "name": "forms",
+  "version": "1.0.0",
+  "description": "Fully working PHP/AJAX contact form script is available in the pro version of the template.\r You can buy it from: https://bootstrapmade.com/personal-free-resume-bootstrap-template/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}

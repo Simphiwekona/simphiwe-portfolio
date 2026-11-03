@@ -5,6 +5,9 @@
 mvnw
 mvnw.cmd
 .DS_Store
+node_modules/
+package-lock.json
+dist/
 
 # Maven specific
 log/

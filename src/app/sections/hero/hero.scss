@@ -1,0 +1,53 @@
+:host {
+  display: block;
+}
+
+/* ---------------------------------------------------------------
+   Hero load choreography.
+   Runs once on mount, staggered by --hero-delay. Only transform,
+   opacity and filter animate, so the whole entrance stays on the
+   compositor and never triggers layout.
+   ------------------------------------------------------------- */
+.hero-in {
+  opacity: 0;
+  transform: translate3d(0, 1.5rem, 0);
+  filter: blur(10px);
+  animation: hero-settle 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+@keyframes hero-settle {
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+/* The portrait melts into its plate at the bottom edge. The mask keeps the
+   shoulders readable while the black t-shirt dissolves into the container. */
+.portrait-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.65) 84%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 68%,
+    rgba(0, 0, 0, 0.65) 84%,
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
+}

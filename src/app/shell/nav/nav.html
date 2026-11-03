@@ -1,0 +1,197 @@
+<header class="fixed inset-x-0 top-0 z-[60] pointer-events-none">
+
+  <!-- Reading progress: a single scaleX transform, no width animation. -->
+  <div
+    class="absolute inset-x-0 top-0 h-px origin-left bg-ember/70"
+    [style.transform]="progressStyle()"
+    aria-hidden="true"
+  ></div>
+
+  <!-- ===================== Floating island, closed state ===================== -->
+  <nav
+    class="pointer-events-auto mx-auto mt-4 flex w-[calc(100%-1.5rem)] max-w-5xl items-center
+           justify-between gap-3 rounded-full border border-chalk/8 bg-carbon/72 px-2 py-2
+           backdrop-blur-2xl md:mt-6 md:w-max md:justify-start md:gap-1 md:px-2.5"
+    aria-label="Primary"
+  >
+    <!-- Wordmark: monogram plate nested like a bezel -->
+    <a
+      [href]="'#'"
+      (click)="goTo('home', $event)"
+      class="group flex items-center gap-2.5 rounded-full py-1 pl-1 pr-2 md:pr-3"
+      [attr.aria-label]="profile.name + ', back to top'"
+    >
+      <span
+        class="grid size-9 place-items-center rounded-full border border-chalk/10
+               bg-chalk/5 text-[0.7rem] font-medium tracking-[0.06em] text-chalk
+               transition-colors duration-500 group-hover:border-ember/40 group-hover:text-ember"
+        aria-hidden="true"
+      >SK</span>
+
+      <span class="hidden text-[0.9rem] font-medium tracking-[-0.02em] text-chalk sm:block">
+        {{ profile.name }}
+      </span>
+    </a>
+
+    <span class="hidden h-4 w-px bg-chalk/10 md:block" aria-hidden="true"></span>
+
+    <!-- Desktop links -->
+    <ul class="hidden items-center gap-0.5 md:flex">
+      @for (item of nav; track item.fragment) {
+        <li>
+          <a
+            [href]="'#' + item.fragment"
+            (click)="goTo(item.fragment, $event)"
+            class="relative rounded-full px-3.5 py-2 text-[0.85rem] transition-colors duration-500"
+            [class.text-chalk]="isActive(item.fragment)"
+            [class.text-ash]="!isActive(item.fragment)"
+            [class.hover:text-chalk]="!isActive(item.fragment)"
+            [attr.aria-current]="isActive(item.fragment) ? 'true' : null"
+          >
+            {{ item.label }}
+            @if (isActive(item.fragment)) {
+              <span
+                class="absolute inset-x-3.5 -bottom-px h-px bg-ember/80"
+                aria-hidden="true"
+              ></span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+
+    <!-- Right cluster -->
+    <div class="flex items-center gap-1.5 md:ml-1">
+      <button
+        type="button"
+        (click)="toggleTheme()"
+        class="grid size-11 place-items-center rounded-full border border-chalk/8 bg-chalk/[0.04]
+               text-ash transition-colors duration-500 hover:border-chalk/20 hover:text-chalk md:size-9"
+        [attr.aria-label]="theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+        [attr.aria-pressed]="!theme.isDark()"
+      >
+        <ng-icon
+          [name]="theme.isDark() ? 'phosphorSunLight' : 'phosphorMoonLight'"
+          size="1rem"
+          aria-hidden="true"
+        />
+      </button>
+
+      <a
+        href="mailto:{{ profile.email }}"
+        class="btn-ember group hidden !py-1.5 !pl-4 !pr-1.5 text-[0.82rem] md:inline-flex"
+      >
+        <span>Get in touch</span>
+        <span class="btn-nest !size-7">
+          <ng-icon
+            name="phosphorArrowUpRightLight"
+            size="0.85rem"
+            class="transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-px"
+            aria-hidden="true"
+          />
+        </span>
+      </a>
+
+      <!-- Hamburger: morphs into a true X, never merely disappears.
+           44px on touch, tightening to 36px once the desktop links take over. -->
+      <button
+        type="button"
+        (click)="toggleMenu()"
+        class="relative grid size-11 place-items-center rounded-full border border-chalk/8
+               bg-chalk/[0.04] md:hidden"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="mobile-menu"
+        [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+      >
+        <span class="sr-only">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+        <span class="relative block h-3 w-4" aria-hidden="true">
+          <span
+            class="absolute left-0 block h-px w-4 bg-chalk transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            [class.top-0]="!menuOpen()"
+            [class.top-1.5]="menuOpen()"
+            [class.rotate-45]="menuOpen()"
+          ></span>
+          <span
+            class="absolute left-0 top-1.5 block h-px w-4 bg-chalk transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            [class.opacity-0]="menuOpen()"
+            [class.scale-x-0]="menuOpen()"
+          ></span>
+          <span
+            class="absolute left-0 block h-px w-4 bg-chalk transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            [class.top-3]="!menuOpen()"
+            [class.top-1.5]="menuOpen()"
+            [class.-rotate-45]="menuOpen()"
+          ></span>
+        </span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- ===================== Screen-filling glass overlay ===================== -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-50 md:hidden"
+  [class.pointer-events-none]="!menuOpen()"
+  [attr.aria-hidden]="!menuOpen()"
+  [attr.inert]="menuOpen() ? null : ''"
+>
+  <!-- Scrim -->
+  <div
+    class="absolute inset-0 bg-void/92 backdrop-blur-3xl transition-opacity duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
+    [class.opacity-0]="!menuOpen()"
+    [class.opacity-100]="menuOpen()"
+    (click)="closeMenu()"
+  ></div>
+
+  <!-- Links: staggered mask reveal, each item waits its turn -->
+  <div class="relative flex h-full flex-col justify-center px-6 pb-24 pt-24">
+    <ul class="flex flex-col">
+      @for (item of nav; track item.fragment; let i = $index) {
+        <li
+          class="overflow-hidden border-b border-chalk/8 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
+          [class.translate-y-10]="!menuOpen()"
+          [class.opacity-0]="!menuOpen()"
+          [class.translate-y-0]="menuOpen()"
+          [class.opacity-100]="menuOpen()"
+          [style.transition-delay.ms]="menuOpen() ? 120 + i * 70 : 0"
+        >
+          <a
+            #firstLink
+            [href]="'#' + item.fragment"
+            (click)="goTo(item.fragment, $event)"
+            class="flex items-baseline justify-between py-5 text-[2rem] font-medium
+                   tracking-[-0.04em] text-chalk"
+            [class.text-ember]="isActive(item.fragment)"
+          >
+            <span>{{ item.label }}</span>
+            <span class="font-mono text-[0.68rem] tracking-[0.1em] text-smoke">
+              0{{ i + 1 }}
+            </span>
+          </a>
+        </li>
+      }
+    </ul>
+
+    <!-- Contact block arrives last -->
+    <div
+      class="mt-10 transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
+      [class.translate-y-8]="!menuOpen()"
+      [class.opacity-0]="!menuOpen()"
+      [class.translate-y-0]="menuOpen()"
+      [class.opacity-100]="menuOpen()"
+      [style.transition-delay.ms]="menuOpen() ? 440 : 0"
+    >
+      <p class="eyebrow">Direct</p>
+      <a
+        href="mailto:{{ profile.email }}"
+        class="mt-3 block break-all text-[1.05rem] text-chalk underline decoration-chalk/20
+               underline-offset-4 transition-colors duration-500 hover:text-ember"
+      >{{ profile.email }}</a>
+      <a
+        href="tel:{{ profile.phoneIntl }}"
+        class="mt-1 block text-[0.9rem] text-ash"
+      >{{ profile.phone }}</a>
+    </div>
+  </div>
+</div>

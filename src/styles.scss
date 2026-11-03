@@ -1,0 +1,472 @@
+/* ============================================================================
+   Simphiwe Kona - Portfolio v2
+   Design engine: Ethereal Glass on cold OLED black.
+   Locked accent: ember amber. No second accent anywhere in UI.
+   Ambient-only tone: frost blue, used solely behind the portrait rim light
+   (it matches the blue studio light on the left side of the photograph).
+   Shape lock: shells 2rem / cores 1.625rem / fields 1rem / pills full.
+
+   NOTE: Tailwind v4 is configured CSS-first right here. There is no
+   tailwind.config.js. This file is the single source of truth for tokens.
+   ========================================================================= */
+
+@use 'tailwindcss';
+
+/* Self-hosted variable fonts, latin subset only (29KB + 23KB). */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist/files/geist-latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist/files/geist-latin-wght-italic.woff2')
+    format('woff2-variations');
+}
+@font-face {
+  font-family: 'Geist Mono Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+
+@theme {
+  /* ---- Surfaces: cold, neutral, OLED ---- */
+  --color-void: #050506;
+  --color-carbon: #0a0a0c;
+  --color-graphite: #121215;
+  --color-steel: #1b1b20;
+  --color-hairline: #26262c;
+
+  /* ---- Type ---- */
+  --color-chalk: #f4f4f2;
+  --color-ash: #9b9ba4;
+  /* Smoke is used for micro-labels and captions, which are small text and must
+     clear WCAG AA 4.5:1. #83838e sits at ~5.1:1 on the void surface. */
+  --color-smoke: #83838e;
+
+  /* ---- THE one accent. Locked across every section. ---- */
+  --color-ember: #e9a23b;
+  --color-ember-deep: #b87a22;
+  --color-ember-soft: #f0be72;
+
+  /* ---- Ambient only: portrait rim light. Never used for UI or text. ---- */
+  --color-frost: #3e7fd9;
+
+  --font-sans:
+    'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ---- Motion: spring physics, never linear / ease-in-out ---- */
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Shape lock ---- */
+  --radius-shell: 2rem;
+  --radius-core: 1.625rem;
+  --radius-field: 1rem;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-hairline);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--color-steel) var(--color-void);
+  }
+
+  body {
+    background-color: var(--color-void);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    letter-spacing: -0.011em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-ember);
+    color: var(--color-void);
+  }
+
+  /* Visible keyboard focus, never removed. */
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-void);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-steel);
+    border-radius: 999px;
+    border: 2px solid var(--color-void);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-hairline);
+  }
+
+  /* Fixed film grain. Declared globally (not inside a component) so the light
+     theme can retune it. It sits above the page, ignores pointer events, and is
+     never attached to a scrolling container, so it costs one static paint. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ======================================================================
+     THE DOUBLE-BEZEL (Doppelrand).
+     Every premium container is machined hardware: an outer tray holding an
+     inner plate, with concentric radii and an inset top highlight.
+     ==================================================================== */
+  .bezel {
+    background-color: color-mix(in srgb, var(--color-chalk) 4%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-chalk) 7%, transparent);
+    border-radius: var(--radius-shell);
+    padding: 0.375rem;
+  }
+
+  .bezel-core {
+    background-color: var(--color-carbon);
+    border-radius: var(--radius-core);
+    box-shadow:
+      inset 0 1px 1px
+        color-mix(in srgb, var(--color-chalk) 8%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--color-chalk) 3%, transparent);
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Sub-variant for denser rows (timeline entries, list rows). */
+  .bezel--tight {
+    padding: 0.25rem;
+  }
+  .bezel--tight > .bezel-core {
+    border-radius: calc(var(--radius-core) - 0.125rem);
+  }
+
+  /* ---- Eyebrow: tiny pill badge above a section headline ---- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-chalk) 9%, transparent);
+    background-color: color-mix(in srgb, var(--color-chalk) 4%, transparent);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ash);
+    white-space: nowrap;
+  }
+
+  /* ---- Hairline divider that fades at both ends ---- */
+  .hairline {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-chalk) 12%, transparent) 22%,
+      color-mix(in srgb, var(--color-chalk) 12%, transparent) 78%,
+      transparent
+    );
+  }
+
+  /* ======================================================================
+     BUTTON ARCHITECTURE: pill + nested trailing icon in its own circle.
+     ==================================================================== */
+  .btn-ember {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    border-radius: 999px;
+    background-color: var(--color-ember);
+    color: #17110a;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      transform 0.5s var(--ease-spring),
+      box-shadow 0.5s var(--ease-spring),
+      background-color 0.5s var(--ease-spring);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .btn-ember:hover {
+    background-color: var(--color-ember-soft);
+    box-shadow: 0 12px 40px -12px
+      color-mix(in srgb, var(--color-ember) 55%, transparent);
+  }
+  .btn-ember:active {
+    transform: scale(0.975);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-chalk) 12%, transparent);
+    background-color: color-mix(in srgb, var(--color-chalk) 4%, transparent);
+    color: var(--color-chalk);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 0.5s var(--ease-spring),
+      border-color 0.5s var(--ease-spring),
+      transform 0.5s var(--ease-spring);
+  }
+  .btn-ghost:hover {
+    background-color: color-mix(in srgb, var(--color-chalk) 8%, transparent);
+    border-color: color-mix(in srgb, var(--color-chalk) 20%, transparent);
+  }
+  .btn-ghost:active {
+    transform: scale(0.975);
+  }
+
+  /* The nested icon circle. Inherits scale/translate physics from parent .group */
+  .btn-nest {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border-radius: 999px;
+    background-color: rgba(0, 0, 0, 0.16);
+    flex: none;
+    transition: transform 0.5s var(--ease-spring);
+  }
+  .btn-nest--light {
+    background-color: color-mix(in srgb, var(--color-chalk) 10%, transparent);
+  }
+
+  /* ---- Form field, shape-locked to the field radius ---- */
+  .field {
+    width: 100%;
+    padding: 0.95rem 1.125rem;
+    border-radius: var(--radius-field);
+    border: 1px solid color-mix(in srgb, var(--color-chalk) 9%, transparent);
+    background-color: color-mix(in srgb, var(--color-chalk) 3%, transparent);
+    color: var(--color-chalk);
+    font-size: 0.9375rem;
+    font-family: inherit;
+    transition:
+      border-color 0.4s var(--ease-spring),
+      background-color 0.4s var(--ease-spring);
+  }
+  .field::placeholder {
+    /* Placeholder text is still text: keep it above the AA floor rather than
+       letting it fade into the field surface. */
+    color: color-mix(in srgb, var(--color-smoke) 82%, var(--color-chalk));
+  }
+  .field:hover {
+    border-color: color-mix(in srgb, var(--color-chalk) 16%, transparent);
+  }
+  .field:focus {
+    outline: none;
+    border-color: color-mix(in srgb, var(--color-ember) 55%, transparent);
+    background-color: color-mix(in srgb, var(--color-chalk) 5%, transparent);
+  }
+  .field:focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+  }
+  .field[aria-invalid='true'] {
+    border-color: #c8564a;
+  }
+
+  /* ---- Radial mesh blooms. Fixed/absolute, never on scrolling content. ---- */
+  .bloom {
+    position: absolute;
+    border-radius: 999px;
+    pointer-events: none;
+    filter: blur(90px);
+    will-change: transform;
+  }
+
+  /* ---- Radial spotlight border card (mouse-tracked via --mx / --my) ---- */
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      color-mix(in srgb, var(--color-ember) 45%, transparent),
+      transparent 62%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.55s var(--ease-spring);
+    pointer-events: none;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
+  }
+
+  /* ---- Scroll reveal. Driven by IntersectionObserver in RevealDirective. ---- */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 4rem, 0);
+    filter: blur(12px);
+    transition:
+      opacity 0.9s var(--ease-out-expo),
+      transform 0.9s var(--ease-out-expo),
+      filter 0.9s var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+}
+
+@utility text-balance-tight {
+  text-wrap: balance;
+}
+
+/* ============================================================================
+   LIGHT THEME
+   A real, fully tokenised mode, not an inverted afterthought. Only the surface
+   and type tokens flip; the accent stays ember so the Color Consistency Lock
+   holds across both modes. Applied via the .theme-light class on <html>, set
+   before first paint by the inline script in index.html.
+   ========================================================================= */
+.theme-light {
+  --color-void: #fbfbf9;
+  --color-carbon: #ffffff;
+  --color-graphite: #f4f4f1;
+  --color-steel: #e7e7e2;
+  --color-hairline: #dcdcd5;
+
+  --color-chalk: #16161a;
+  --color-ash: #55555f;
+  --color-smoke: #63636d;
+
+  /* Accent stays ember, darkened for AA contrast on light surfaces. */
+  --color-ember: #a8701a;
+  --color-ember-deep: #8a5a12;
+  --color-ember-soft: #c98f2e;
+}
+
+/* On light surfaces, elevation comes from a warm-tinted shadow, never a
+   pure-black drop shadow. */
+.theme-light .bezel-core {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    0 1px 2px rgb(60 55 40 / 0.04),
+    0 8px 28px -12px rgb(60 55 40 / 0.09);
+}
+
+.theme-light .bezel {
+  background-color: rgb(20 20 25 / 0.03);
+  border-color: rgb(20 20 25 / 0.07);
+}
+
+/* The ember CTA needs light text on light surfaces for AA contrast. */
+.theme-light .btn-ember {
+  color: #fffaf0;
+}
+
+.theme-light .btn-nest {
+  background-color: rgba(0, 0, 0, 0.14);
+}
+
+.theme-light .field {
+  background-color: rgb(20 20 25 / 0.02);
+  border-color: rgb(20 20 25 / 0.1);
+}
+
+/* Blooms would wash out a bright page; drop them hard. */
+.theme-light .bloom {
+  opacity: 0.28;
+}
+
+/* Film grain is a dark-surface device. */
+.theme-light body::after {
+  opacity: 0.012;
+}
+
+.theme-light ::selection {
+  background-color: var(--color-ember);
+  color: #fffaf0;
+}

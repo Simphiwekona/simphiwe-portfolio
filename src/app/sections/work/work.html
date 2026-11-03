@@ -1,0 +1,160 @@
+<section
+  id="work"
+  class="relative isolate overflow-hidden py-24 md:py-32"
+  aria-labelledby="work-heading"
+>
+  <div class="mx-auto w-full max-w-[1400px] px-4 md:px-8">
+
+    <!-- ============================== Header ============================== -->
+    <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between" appReveal>
+      <div class="max-w-2xl">
+        <p class="eyebrow">Work</p>
+
+        <h2
+          id="work-heading"
+          class="mt-6 text-[clamp(2rem,4.6vw,3.5rem)] font-medium leading-[1.02]
+                 tracking-[-0.04em] text-chalk"
+        >
+          Platforms shipped, and the
+          <span class="italic text-chalk/92">proof behind them</span>.
+        </h2>
+      </div>
+
+      <!-- Filters: segmented control, keyboard reachable, aria-pressed state -->
+      <div
+        class="flex w-max max-w-full gap-1 overflow-x-auto rounded-full border border-chalk/8
+               bg-chalk/[0.025] p-1"
+        role="group"
+        aria-label="Filter work"
+      >
+        @for (option of filters; track option.key) {
+          <button
+            type="button"
+            (click)="setFilter(option.key)"
+            class="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2
+                   text-[0.82rem] transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]"
+            [class.bg-chalk]="activeFilter() === option.key"
+            [class.text-void]="activeFilter() === option.key"
+            [class.text-ash]="activeFilter() !== option.key"
+            [class.hover:text-chalk]="activeFilter() !== option.key"
+            [attr.aria-pressed]="activeFilter() === option.key"
+          >
+            {{ option.label }}
+            <span
+              class="font-mono text-[0.62rem] tabular-nums"
+              [class.text-void/55]="activeFilter() === option.key"
+              [class.text-smoke]="activeFilter() !== option.key"
+            >{{ countFor(option.key) }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- ================================ Grid ================================
+         Two columns, so the certification view (4 items) fills its rows exactly
+         and never strands an orphan card in a three-up layout. -->
+    <div class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-16">
+      @for (item of items(); track item.title; let i = $index) {
+        <article
+          class="bezel spotlight group"
+          appReveal
+          [revealDelay]="(i % 2) * 70"
+          appSpotlight
+        >
+          <div class="bezel-core flex h-full flex-col !bg-graphite">
+
+            <!-- Media plate -->
+            <div class="relative overflow-hidden rounded-t-[calc(1.625rem-0.125rem)]">
+              <div class="aspect-[16/10] overflow-hidden bg-carbon">
+                <img
+                  [src]="item.image"
+                  [alt]="item.title"
+                  width="800"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                  class="size-full object-cover opacity-90 transition-all duration-700
+                         ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:scale-[1.04] group-hover:opacity-100"
+                />
+              </div>
+
+              <!-- Bottom scrim so any light image edge resolves into the card -->
+              <div
+                class="pointer-events-none absolute inset-x-0 bottom-0 h-20"
+                style="background: linear-gradient(to top, #121215 8%, transparent)"
+                aria-hidden="true"
+              ></div>
+
+              <!-- Kind tag -->
+              <span
+                class="absolute right-3 top-3 rounded-full border border-chalk/10
+                       bg-void/75 px-2.5 py-1 font-mono text-[0.58rem] uppercase
+                       tracking-[0.14em] text-ash backdrop-blur-xl"
+              >
+                {{ item.kind === 'project' ? 'Project' : 'Certification' }}
+              </span>
+            </div>
+
+            <!-- Body -->
+            <div class="flex flex-1 flex-col p-5">
+              <p class="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-smoke">
+                {{ item.context }}
+              </p>
+
+              <h3 class="mt-2 text-[1.02rem] font-medium leading-snug tracking-[-0.02em] text-chalk">
+                {{ item.title }}
+              </h3>
+
+              <p class="mt-2.5 max-w-[58ch] text-[0.86rem] leading-relaxed text-ash">
+                {{ item.blurb }}
+              </p>
+
+              <ul class="mt-4 flex flex-wrap gap-1.5">
+                @for (tech of item.stack; track tech) {
+                  <li
+                    class="rounded-[0.4rem] border border-chalk/8 px-2 py-0.5
+                           font-mono text-[0.62rem] text-smoke"
+                  >
+                    {{ tech }}
+                  </li>
+                }
+              </ul>
+
+              <!-- Footer link. Only rendered when a real URL exists. -->
+              <div class="mt-auto pt-5">
+                @if (item.link) {
+                  <a
+                    [href]="item.link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 text-[0.8rem] text-ash
+                           transition-colors duration-500 hover:text-ember"
+                  >
+                    <span>Visit the platform</span>
+                    <ng-icon
+                      name="phosphorArrowUpRightLight"
+                      size="0.85rem"
+                      class="transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-px"
+                      aria-hidden="true"
+                    />
+                    <span class="sr-only">(opens in a new tab)</span>
+                  </a>
+                } @else {
+                  <p class="font-mono text-[0.62rem] uppercase tracking-[0.14em] text-smoke">
+                    Enterprise delivery
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <!-- Honest note rather than a fake "load more" control -->
+    <p class="mt-10 text-[0.82rem] text-smoke" appReveal>
+      Additional enterprise work is covered under NDA. Details available on request.
+    </p>
+
+  </div>
+</section>

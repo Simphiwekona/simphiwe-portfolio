@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Not found | Simphiwe Kona</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#050506" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --void: #050506;
+        --chalk: #f4f4f2;
+        --ash: #9b9ba4;
+        --smoke: #6a6a75;
+        --ember: #e9a23b;
+        --hairline: #26262c;
+      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        background: var(--void);
+        color: var(--chalk);
+        font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        letter-spacing: -0.011em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        overflow: hidden;
+      }
+      /* Same cold ambient blooms as the site. */
+      .bloom {
+        position: fixed;
+        border-radius: 999px;
+        filter: blur(110px);
+        pointer-events: none;
+      }
+      .bloom-a { right: -10%; top: -10%; width: 34rem; height: 34rem; background: rgba(62,127,217,0.10); }
+      .bloom-b { left: -18%; bottom: -22%; width: 30rem; height: 30rem; background: rgba(233,162,59,0.07); }
+
+      main { position: relative; max-width: 34rem; }
+      .code {
+        font-family: ui-monospace, 'SFMono-Regular', monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--smoke);
+      }
+      h1 {
+        margin: 1.25rem 0 0;
+        font-size: clamp(2rem, 6vw, 3rem);
+        font-weight: 500;
+        letter-spacing: -0.04em;
+        line-height: 1.03;
+      }
+      p {
+        margin: 1.25rem 0 0;
+        color: var(--ash);
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        max-width: 46ch;
+      }
+      a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-top: 2rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 999px;
+        background: var(--ember);
+        color: #17110a;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      a:hover { transform: scale(1.02); }
+      a:active { transform: scale(0.975); }
+      a:focus-visible { outline: 2px solid var(--chalk); outline-offset: 3px; }
+    </style>
+  </head>
+  <body>
+    <span class="bloom bloom-a"></span>
+    <span class="bloom bloom-b"></span>
+
+    <main>
+      <p class="code">Error 404</p>
+      <h1>That page is not here.</h1>
+      <p>
+        The link may be stale, or the address may have a typo in it. Everything
+        worth seeing lives on the main page.
+      </p>
+      <a href="/">Back to the portfolio</a>
+    </main>
+  </body>
+</html>

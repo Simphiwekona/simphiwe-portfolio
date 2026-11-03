@@ -1,0 +1,431 @@
+<footer id="contact" class="relative isolate overflow-hidden pt-24 md:pt-32" aria-labelledby="contact-heading">
+
+  <!-- Light: one ember bloom rising from the base -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <span class="bloom bottom-[-18%] left-1/2 h-[34rem] w-[42rem] -translate-x-1/2 bg-ember/7"></span>
+  </div>
+
+  <div class="mx-auto w-full max-w-[1400px] px-4 md:px-8">
+
+    <!-- ============================== Header ============================== -->
+    <div class="max-w-3xl" appReveal>
+      <p class="eyebrow">Contact</p>
+
+      <h2
+        id="contact-heading"
+        class="mt-6 text-[clamp(2.1rem,5vw,3.9rem)] font-medium leading-[1.0]
+               tracking-[-0.045em] text-chalk"
+      >
+        Let's build something that
+        <span class="italic text-chalk/92">holds up</span>.
+      </h2>
+
+      <p class="mt-6 max-w-[52ch] text-[1.0625rem] leading-relaxed text-ash">
+        Open to senior Angular and full-stack roles, contract work and platform
+        builds. If you need someone who can own a feature from design through to
+        production, that is the work I do.
+      </p>
+    </div>
+
+    <!-- ============================ Two-column body ============================ -->
+    <div class="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-12 md:mt-16">
+
+      <!-- ------------------------- Left: form ------------------------- -->
+      <div class="bezel lg:col-span-7" appReveal>
+        <div class="bezel-core !p-5 md:!p-8">
+
+          <!-- Success state replaces the form entirely -->
+          @if (contact.state() === 'sent') {
+            <div class="flex min-h-[22rem] flex-col items-start justify-center py-6">
+              <span
+                class="grid size-12 place-items-center rounded-full border border-ember/30 bg-ember/10 text-ember"
+                aria-hidden="true"
+              >
+                <ng-icon name="phosphorCheckLight" size="1.4rem" />
+              </span>
+
+              <h3 class="mt-6 text-[1.4rem] font-medium tracking-[-0.03em] text-chalk">
+                Message sent.
+              </h3>
+
+              <p class="mt-3 max-w-[42ch] text-[0.95rem] leading-relaxed text-ash">
+                Thanks for reaching out. I read everything that lands here and
+                reply within a day or two. If it is urgent, call
+                <a
+                  href="tel:{{ profile.phoneIntl }}"
+                  class="text-chalk underline decoration-chalk/25 underline-offset-4
+                         transition-colors duration-500 hover:text-ember"
+                >{{ profile.phone }}</a>.
+              </p>
+
+              <button type="button" (click)="reset()" class="btn-ghost group mt-8">
+                <span>Send another</span>
+                <ng-icon
+                  name="phosphorArrowRightLight"
+                  size="0.95rem"
+                  class="transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-1"
+                  aria-hidden="true"
+                />
+              </button>
+            </div>
+          } @else {
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="space-y-4">
+
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <!-- Name -->
+                <div>
+                  <label
+                    for="name"
+                    class="mb-2 block font-mono text-[0.62rem] uppercase tracking-[0.16em] text-smoke"
+                  >Name</label>
+                  <input
+                    id="name"
+                    type="text"
+                    formControlName="name"
+                    autocomplete="name"
+                    class="field"
+                    placeholder="Your name"
+                    [attr.aria-invalid]="showError(form.controls.name) ? 'true' : null"
+                    [attr.aria-describedby]="showError(form.controls.name) ? 'name-error' : null"
+                  />
+                  @if (showError(form.controls.name)) {
+                    <p id="name-error" class="mt-2 text-[0.75rem] text-[#d9756a]" role="alert">
+                      {{ errorFor(form.controls.name, 'Name') }}
+                    </p>
+                  }
+                </div>
+
+                <!-- Email -->
+                <div>
+                  <label
+                    for="email"
+                    class="mb-2 block font-mono text-[0.62rem] uppercase tracking-[0.16em] text-smoke"
+                  >Email</label>
+                  <input
+                    id="email"
+                    type="email"
+                    formControlName="email"
+                    autocomplete="email"
+                    class="field"
+                    placeholder="you@company.com"
+                    [attr.aria-invalid]="showError(form.controls.email) ? 'true' : null"
+                    [attr.aria-describedby]="showError(form.controls.email) ? 'email-error' : null"
+                  />
+                  @if (showError(form.controls.email)) {
+                    <p id="email-error" class="mt-2 text-[0.75rem] text-[#d9756a]" role="alert">
+                      {{ errorFor(form.controls.email, 'Email') }}
+                    </p>
+                  }
+                </div>
+              </div>
+
+              <!-- Subject -->
+              <div>
+                <label
+                  for="subject"
+                  class="mb-2 block font-mono text-[0.62rem] uppercase tracking-[0.16em] text-smoke"
+                >Subject</label>
+                <input
+                  id="subject"
+                  type="text"
+                  formControlName="subject"
+                  class="field"
+                  placeholder="What is this about?"
+                  [attr.aria-invalid]="showError(form.controls.subject) ? 'true' : null"
+                  [attr.aria-describedby]="showError(form.controls.subject) ? 'subject-error' : null"
+                />
+                @if (showError(form.controls.subject)) {
+                  <p id="subject-error" class="mt-2 text-[0.75rem] text-[#d9756a]" role="alert">
+                    {{ errorFor(form.controls.subject, 'Subject') }}
+                  </p>
+                }
+              </div>
+
+              <!-- Message -->
+              <div>
+                <div class="mb-2 flex items-baseline justify-between gap-4">
+                  <label
+                    for="message"
+                    class="block font-mono text-[0.62rem] uppercase tracking-[0.16em] text-smoke"
+                  >Message</label>
+                  <span class="font-mono text-[0.62rem] text-smoke tabular-nums">
+                    {{ form.controls.message.value.length }} / 2000
+                  </span>
+                </div>
+                <textarea
+                  id="message"
+                  formControlName="message"
+                  rows="5"
+                  class="field resize-y"
+                  placeholder="Tell me about the role, the platform, or the problem."
+                  [attr.aria-invalid]="showError(form.controls.message) ? 'true' : null"
+                  [attr.aria-describedby]="showError(form.controls.message) ? 'message-error' : null"
+                ></textarea>
+                @if (showError(form.controls.message)) {
+                  <p id="message-error" class="mt-2 text-[0.75rem] text-[#d9756a]" role="alert">
+                    {{ errorFor(form.controls.message, 'Message') }}
+                  </p>
+                }
+              </div>
+
+              <!-- Honeypot: visually hidden, never focusable, never announced -->
+              <div class="sr-only" aria-hidden="true">
+                <label for="company">Company</label>
+                <input id="company" type="text" formControlName="company" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <!-- Error banner -->
+              @if (contact.state() === 'error') {
+                <div
+                  class="flex items-start gap-3 rounded-[var(--radius-field)] border border-[#d9756a]/30
+                         bg-[#d9756a]/8 px-4 py-3"
+                  role="alert"
+                >
+                  <ng-icon
+                    name="phosphorWarningCircleLight"
+                    size="1.1rem"
+                    class="mt-px flex-none text-[#d9756a]"
+                    aria-hidden="true"
+                  />
+                  <p class="text-[0.82rem] leading-relaxed text-[#e5a29a]">
+                    {{ contact.error() || 'Could not send that message.' }}
+                    You can also email
+                    <a
+                      href="mailto:{{ profile.email }}"
+                      class="underline underline-offset-2"
+                    >{{ profile.email }}</a>.
+                  </p>
+                </div>
+              }
+
+              <!-- Submit: loading, error and idle all handled -->
+              <div class="flex flex-wrap items-center gap-3 pt-1">
+                <button
+                  type="submit"
+                  class="btn-ember group disabled:cursor-not-allowed disabled:opacity-60"
+                  [disabled]="contact.state() === 'sending'"
+                >
+                  <span>{{ contact.state() === 'sending' ? 'Sending' : 'Send message' }}</span>
+
+                  <span class="btn-nest">
+                    @if (contact.state() === 'sending') {
+                      <span
+                        class="size-3.5 animate-spin rounded-full border border-void/30 border-t-void"
+                        aria-hidden="true"
+                      ></span>
+                    } @else {
+                      <ng-icon
+                        name="phosphorArrowUpRightLight"
+                        size="1rem"
+                        class="transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px group-hover:translate-x-px"
+                        aria-hidden="true"
+                      />
+                    }
+                  </span>
+                </button>
+
+                <p class="text-[0.75rem] text-smoke">
+                  Or email directly at
+                  <a
+                    href="mailto:{{ profile.email }}"
+                    class="text-ash underline decoration-chalk/20 underline-offset-4
+                           transition-colors duration-500 hover:text-ember"
+                  >{{ profile.email }}</a>
+                </p>
+              </div>
+
+              <p class="sr-only" aria-live="polite">
+                @switch (contact.state()) {
+                  @case ('sending') { Sending your message. }
+                  @case ('sent') { Your message was sent. }
+                  @case ('error') { Your message could not be sent. }
+                }
+              </p>
+            </form>
+          }
+        </div>
+      </div>
+
+      <!-- --------------------- Right: contact details --------------------- -->
+      <div class="flex flex-col gap-4 lg:col-span-5">
+
+        <!-- Direct channels -->
+        <div class="bezel" appReveal [revealDelay]="80">
+          <div class="bezel-core !p-5 md:!p-6">
+            <p class="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-smoke">
+              Direct
+            </p>
+
+            <ul class="mt-4 space-y-1">
+              <li>
+                <a
+                  href="mailto:{{ profile.email }}"
+                  class="group flex items-center gap-3 rounded-[var(--radius-field)] px-2 py-2.5
+                         transition-colors duration-500 hover:bg-chalk/[0.04]"
+                >
+                  <span
+                    class="grid size-8 flex-none place-items-center rounded-full border border-chalk/8
+                           text-ash transition-colors duration-500 group-hover:border-ember/30 group-hover:text-ember"
+                    aria-hidden="true"
+                  >
+                    <ng-icon name="phosphorEnvelopeSimpleLight" size="0.95rem" />
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block font-mono text-[0.58rem] uppercase tracking-[0.14em] text-smoke">
+                      Email
+                    </span>
+                    <span class="block break-all text-[0.88rem] text-chalk">
+                      {{ profile.email }}
+                    </span>
+                  </span>
+                  <ng-icon
+                    name="phosphorArrowUpRightLight"
+                    size="0.85rem"
+                    class="ml-auto flex-none text-smoke transition-all duration-500
+                           ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px
+                           group-hover:translate-x-px group-hover:text-ember"
+                    aria-hidden="true"
+                  />
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="tel:{{ profile.phoneIntl }}"
+                  class="group flex items-center gap-3 rounded-[var(--radius-field)] px-2 py-2.5
+                         transition-colors duration-500 hover:bg-chalk/[0.04]"
+                >
+                  <span
+                    class="grid size-8 flex-none place-items-center rounded-full border border-chalk/8
+                           text-ash transition-colors duration-500 group-hover:border-ember/30 group-hover:text-ember"
+                    aria-hidden="true"
+                  >
+                    <ng-icon name="phosphorPhoneLight" size="0.95rem" />
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block font-mono text-[0.58rem] uppercase tracking-[0.14em] text-smoke">
+                      Phone
+                    </span>
+                    <span class="block text-[0.88rem] text-chalk">{{ profile.phone }}</span>
+                  </span>
+                  <ng-icon
+                    name="phosphorArrowUpRightLight"
+                    size="0.85rem"
+                    class="ml-auto flex-none text-smoke transition-all duration-500
+                           ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-px
+                           group-hover:translate-x-px group-hover:text-ember"
+                    aria-hidden="true"
+                  />
+                </a>
+              </li>
+
+              <li>
+                <div class="flex items-center gap-3 px-2 py-2.5">
+                  <span
+                    class="grid size-8 flex-none place-items-center rounded-full border border-chalk/8 text-ash"
+                    aria-hidden="true"
+                  >
+                    <ng-icon name="phosphorMapPinLight" size="0.95rem" />
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block font-mono text-[0.58rem] uppercase tracking-[0.14em] text-smoke">
+                      Based in
+                    </span>
+                    <span class="block text-[0.88rem] text-chalk">{{ profile.location }}</span>
+                  </span>
+                </div>
+              </li>
+            </ul>
+
+            <hr class="hairline my-4" />
+
+            <!-- Socials -->
+            <div class="flex items-center gap-2">
+              <a
+                [href]="profile.links.github"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-2 rounded-full border border-chalk/8 px-3.5 py-2
+                       text-[0.8rem] text-ash transition-colors duration-500
+                       hover:border-chalk/20 hover:text-chalk"
+              >
+                <ng-icon name="phosphorGithubLogoLight" size="1rem" aria-hidden="true" />
+                <span>GitHub</span>
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+
+              <a
+                [href]="profile.links.linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex items-center gap-2 rounded-full border border-chalk/8 px-3.5 py-2
+                       text-[0.8rem] text-ash transition-colors duration-500
+                       hover:border-chalk/20 hover:text-chalk"
+              >
+                <ng-icon name="phosphorLinkedinLogoLight" size="1rem" aria-hidden="true" />
+                <span>LinkedIn</span>
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="bezel" appReveal [revealDelay]="140">
+          <div class="bezel-core !p-5 md:!p-6">
+            <div class="flex items-center justify-between gap-4">
+              <p class="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-smoke">
+                Availability
+              </p>
+              <span
+                class="rounded-full border border-ember/25 bg-ember/8 px-2.5 py-1
+                       font-mono text-[0.55rem] uppercase tracking-[0.14em] text-ember"
+              >
+                {{ profile.available }}
+              </span>
+            </div>
+
+            <p class="mt-4 text-[0.85rem] leading-relaxed text-ash">
+              Currently taking on senior frontend and full-stack engagements.
+              Remote, or on site around Cape Town.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================== Footer bar ============================== -->
+    <div class="mt-16 md:mt-24">
+      <hr class="hairline" />
+
+      <div class="flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span
+            class="grid size-8 place-items-center rounded-full border border-chalk/10 bg-chalk/5
+                   text-[0.6rem] font-medium tracking-[0.06em] text-chalk"
+            aria-hidden="true"
+          >SK</span>
+          <p class="text-[0.8rem] text-smoke">
+            &copy; {{ year }} {{ profile.name }}. Built with Angular.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <a
+            href="#home"
+            (click)="$event.preventDefault(); scrollToTop($event)"
+            class="text-[0.78rem] text-smoke transition-colors duration-500 hover:text-chalk"
+          >
+            Back to top
+          </a>
+          <a
+            href="mailto:{{ profile.email }}"
+            class="text-[0.78rem] text-smoke transition-colors duration-500 hover:text-chalk"
+          >
+            {{ profile.email }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

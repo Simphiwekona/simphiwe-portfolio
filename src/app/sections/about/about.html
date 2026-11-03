@@ -1,0 +1,135 @@
+<section id="about" class="relative isolate overflow-hidden py-24 md:py-32" aria-labelledby="about-heading">
+  <div class="mx-auto w-full max-w-[1400px] px-4 md:px-8">
+
+    <!-- ============================== Header ============================== -->
+    <div class="max-w-3xl" appReveal>
+      <p class="eyebrow">About</p>
+
+      <h2
+        id="about-heading"
+        class="mt-6 text-[clamp(2rem,4.6vw,3.5rem)] font-medium leading-[1.02]
+               tracking-[-0.04em] text-chalk"
+      >
+        I build the parts of the product that
+        <span class="italic text-chalk/92">cannot break</span>.
+      </h2>
+
+      <div class="mt-7 space-y-5">
+        @for (paragraph of paragraphs; track $index) {
+          <p class="max-w-[62ch] text-[1.0625rem] leading-relaxed text-ash">
+            {{ paragraph }}
+          </p>
+        }
+      </div>
+    </div>
+
+    <!-- ========================= Bento: metrics + portrait ========================= -->
+    <div class="mt-16 grid grid-cols-1 gap-4 md:mt-20 md:grid-cols-6">
+
+      <!-- Tall portrait cell spans 2 rows on desktop. -->
+      <div class="bezel md:col-span-2 md:row-span-2" appReveal [revealDelay]="60">
+        <div class="bezel-core !bg-void">
+          <img
+            src="portrait-square.webp"
+            [alt]="profile.name + ' in the studio'"
+            width="760"
+            height="760"
+            loading="lazy"
+            decoding="async"
+            class="h-full min-h-[18rem] w-full object-cover object-top opacity-95"
+          />
+
+          <!-- Amber plate anchoring the lower edge -->
+          <div
+            class="absolute inset-x-0 bottom-0 flex items-baseline justify-between gap-3
+                   border-t border-chalk/8 bg-carbon/85 px-5 py-4 backdrop-blur-none"
+          >
+            <p class="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-smoke">
+              Milnerton
+            </p>
+            <p class="text-[0.78rem] text-ash">Cape Town, ZA</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metric cells -->
+      @for (metric of metrics; track metric.label; let i = $index) {
+        <div
+          class="bezel spotlight md:col-span-2"
+          appReveal
+          [revealDelay]="90 + i * 60"
+          appSpotlight
+        >
+          <div class="bezel-core flex h-full flex-col !p-5 md:!p-6">
+            <div class="flex items-start justify-between gap-3">
+              <p
+                class="font-mono text-[clamp(2.1rem,3.8vw,2.9rem)] font-light leading-none
+                       tracking-[-0.03em] text-chalk tabular-nums"
+                [appCountUp]="metric.value"
+              >{{ metric.value }}</p>
+
+              <span class="mt-2.5 h-px flex-1 bg-chalk/16" aria-hidden="true"></span>
+            </div>
+
+            <!-- Label sits close to the numeral so the pair reads as one unit
+                 rather than a number stranded at the top of an empty box. -->
+            <p class="mt-4 max-w-[24ch] text-[0.9rem] leading-snug text-ash">
+              {{ metric.label }}
+            </p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ============================ Stack marquee ============================ -->
+    <div class="mt-16 md:mt-20" appReveal [revealDelay]="80">
+      <p class="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-smoke">
+        Working stack
+      </p>
+
+      <div class="marquee mt-5" aria-hidden="true">
+        <div class="marquee-track">
+          @for (item of marquee; track $index) {
+            <span class="marquee-item">{{ item }}</span>
+          }
+        </div>
+      </div>
+      <span class="sr-only">{{ 'Frontend, backend, data and delivery tooling across Angular and Java.' }}</span>
+    </div>
+
+    <!-- ============================== Skills ============================== -->
+    <div class="mt-16 md:mt-20">
+      <div class="flex items-end justify-between gap-6" appReveal>
+        <h3 class="text-[1.35rem] font-medium tracking-[-0.03em] text-chalk">
+          What I work in
+        </h3>
+        <p class="hidden text-[0.82rem] text-smoke sm:block">
+          Depth over breadth
+        </p>
+      </div>
+
+      <!-- Rows separated by hairlines, not cards. Elevation would say nothing here. -->
+      <dl class="mt-8 divide-y divide-chalk/8 border-t border-chalk/8">
+        @for (group of skillGroups; track group.name; let i = $index) {
+          <div
+            class="group grid grid-cols-1 gap-1 py-5 transition-colors duration-500
+                   hover:bg-chalk/[0.015] sm:grid-cols-[13rem_1fr] sm:gap-8 sm:py-6"
+            appReveal
+            [revealDelay]="i * 45"
+          >
+            <dt
+              class="text-[0.95rem] font-medium tracking-[-0.015em] text-chalk
+                     transition-colors duration-500 group-hover:text-ember"
+            >
+              {{ group.name }}
+            </dt>
+            <dd class="text-[0.9rem] leading-relaxed text-ash">
+              {{ group.detail }}
+            </dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,151 @@
+<section
+  id="home"
+  class="relative isolate flex min-h-[100dvh] items-center overflow-hidden pb-16 pt-28 md:pb-20 md:pt-32"
+>
+  <!-- Ambient light. Fixed to the section, never to a scrolling container. -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <!-- Frost bloom: echoes the blue studio light on the left of the portrait -->
+    <span
+      class="bloom right-[-14%] top-[6%] h-[34rem] w-[34rem] bg-frost/12 md:right-[2%] md:h-[42rem] md:w-[42rem]"
+    ></span>
+    <!-- Ember bloom: the single accent, low and warm -->
+    <span
+      class="bloom left-[-22%] top-[52%] h-[26rem] w-[26rem] bg-ember/7 md:h-[32rem] md:w-[32rem]"
+    ></span>
+
+    <!-- Fine grid: reads as machined surface, not decoration -->
+    <div
+      class="absolute inset-0 opacity-[0.16]"
+      style="
+        background-image:
+          linear-gradient(to right, #26262c 1px, transparent 1px),
+          linear-gradient(to bottom, #26262c 1px, transparent 1px);
+        background-size: 88px 88px;
+        mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+        -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 20%, transparent 78%);
+      "
+    ></div>
+  </div>
+
+  <div class="mx-auto w-full max-w-[1400px] px-4 md:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
+
+      <!-- ============================ Type block ============================ -->
+      <div class="lg:col-span-7 xl:col-span-7">
+        <p class="eyebrow hero-in" style="--hero-delay: 60ms">
+          {{ profile.role }}
+        </p>
+
+        <!-- Three lines, each one its own reveal weight. -->
+        <h1
+          class="mt-6 text-[clamp(2.6rem,7.2vw,5.6rem)] font-medium leading-[0.94]
+                 tracking-[-0.045em] text-chalk"
+        >
+          <span class="hero-in block" style="--hero-delay: 140ms">
+            {{ profile.headline.lead }}
+          </span>
+          <span
+            class="hero-in block pb-1 italic text-chalk/92"
+            style="--hero-delay: 220ms"
+          >{{ profile.headline.emphasis }}</span>
+          <span class="hero-in block" style="--hero-delay: 300ms">
+            {{ profile.headline.tail }}
+          </span>
+        </h1>
+
+        <p
+          class="hero-in mt-7 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ash md:text-[1.125rem]"
+          style="--hero-delay: 400ms"
+        >
+          Six years on banking, healthcare and government platforms. I own Angular
+          frontends end to end, and the Spring Boot services behind them.
+        </p>
+
+        <div
+          class="hero-in mt-9 flex flex-wrap items-center gap-3"
+          style="--hero-delay: 480ms"
+        >
+          <a
+            href="#experience"
+            (click)="scrollSpy.scrollTo('experience', $event)"
+            class="btn-ember group"
+          >
+            <span>View experience</span>
+            <span class="btn-nest">
+              <ng-icon
+                name="phosphorArrowDownRightLight"
+                size="1rem"
+                class="transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:translate-y-0.5"
+                aria-hidden="true"
+              />
+            </span>
+          </a>
+
+          <a href="mailto:{{ profile.email }}" class="btn-ghost group">
+            <span>Email me</span>
+            <ng-icon
+              name="phosphorEnvelopeSimpleLight"
+              size="1rem"
+              class="text-ash transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:-translate-y-0.5 group-hover:text-ember"
+              aria-hidden="true"
+            />
+          </a>
+        </div>
+      </div>
+
+      <!-- ============================== Portrait ============================== -->
+      <div class="hero-in lg:col-span-5" style="--hero-delay: 380ms">
+        <div class="relative mx-auto w-full max-w-[30rem] lg:max-w-none">
+
+          <!-- Warm rim sitting behind the cutout, bridging shirt into background -->
+          <span
+            class="bloom left-1/2 top-[28%] h-[70%] w-[82%] -translate-x-1/2 bg-ember/10"
+            aria-hidden="true"
+          ></span>
+
+          <div class="bezel relative bg-chalk/[0.03]">
+            <div class="bezel-core !overflow-hidden !bg-gradient-to-b !from-graphite/60 !to-carbon">
+
+              <!-- Cutout portrait. Masked at the base so the black shirt
+                   dissolves into the container instead of ending in a hard seam. -->
+              <img
+                src="portrait-hero.webp"
+                [alt]="profile.name + ', ' + profile.role"
+                width="820"
+                height="1000"
+                fetchpriority="high"
+                decoding="async"
+                class="portrait-fade block h-auto w-full select-none"
+                draggable="false"
+              />
+
+              <!-- Base plate: a proper scrim strip so the metadata never sits
+                   directly on the subject's chest. -->
+              <div
+                class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4
+                       border-t border-chalk/8 bg-carbon/80 px-5 py-4 md:px-6"
+              >
+                <div>
+                  <p class="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-smoke">
+                    Based in
+                  </p>
+                  <p class="mt-1 text-[0.9rem] font-medium text-chalk">
+                    Cape Town, ZA
+                  </p>
+                </div>
+
+                <p
+                  class="rounded-full border border-chalk/10 bg-carbon/70 px-3 py-1.5
+                         font-mono text-[0.62rem] uppercase tracking-[0.14em] text-ash backdrop-blur-xl"
+                >
+                  {{ profile.available }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

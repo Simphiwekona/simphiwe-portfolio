@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+/* ---------------------------------------------------------------
+   Marquee: one per page, transform-driven.
+
+   The track holds the list twice, so translating by exactly -50%
+   lands on an identical frame and the loop is seamless. Only
+   transform animates. Pauses on hover and when the user prefers
+   reduced motion.
+   ------------------------------------------------------------- */
+.marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: marquee-slide 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-item {
+  position: relative;
+  flex: none;
+  padding-inline: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--color-ash);
+  white-space: nowrap;
+}
+
+/* Hairline separator dot between items. */
+.marquee-item::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  width: 3px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background-color: var(--color-hairline);
+}
+
+@keyframes marquee-slide {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 0.5rem 0;
+  }
+}

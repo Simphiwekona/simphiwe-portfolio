@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <title>Simphiwe Kona | Angular &amp; Full-Stack Java Engineer</title>
+
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <meta
+      name="description"
+      content="Simphiwe Kona is a senior Angular and full-stack Java engineer in Cape Town, building enterprise banking, healthcare and government platforms with Angular, TypeScript and Spring Boot."
+    />
+    <meta name="author" content="Simphiwe Kona" />
+    <meta name="theme-color" content="#050506" />
+    <meta name="color-scheme" content="dark light" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="canonical" href="https://simphiwekona.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Simphiwe Kona" />
+    <meta property="og:title" content="Simphiwe Kona | Angular & Full-Stack Java Engineer" />
+    <meta
+      property="og:description"
+      content="Six years building banking, healthcare and government platforms. Angular frontends owned end to end, with the Spring Boot services behind them."
+    />
+    <meta property="og:image" content="og-cover.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://simphiwekona.com/" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Simphiwe Kona | Angular & Full-Stack Java Engineer" />
+    <meta
+      name="twitter:description"
+      content="Angular and full-stack Java engineer. Enterprise banking, healthcare and government platforms."
+    />
+    <meta name="twitter:image" content="og-cover.webp" />
+
+    <!-- Resolve the theme before first paint so there is no flash. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('sk-theme');
+          var mode = stored === 'light' || stored === 'dark' ? stored : 'dark';
+          document.documentElement.classList.toggle('theme-light', mode === 'light');
+          document.documentElement.style.colorScheme = mode;
+        } catch (e) {
+          document.documentElement.style.colorScheme = 'dark';
+        }
+      })();
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Simphiwe Kona",
+        "jobTitle": "Angular & Full-Stack Java Engineer",
+        "email": "mailto:konaolwethu@gmail.com",
+        "telephone": "+27636242342",
+        "url": "https://simphiwekona.com/",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Milnerton, Cape Town",
+          "addressCountry": "ZA"
+        },
+        "knowsAbout": [
+          "Angular",
+          "TypeScript",
+          "RxJS",
+          "Java",
+          "Spring Boot",
+          "PostgreSQL",
+          "Enterprise software architecture"
+        ],
+        "sameAs": [
+          "https://github.com/Simphiwekona",
+          "https://linkedin.com/in/simphiwekona34"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

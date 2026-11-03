@@ -1,0 +1,172 @@
+<section
+  id="experience"
+  class="relative isolate overflow-hidden py-24 md:py-32"
+  aria-labelledby="experience-heading"
+>
+  <!-- Single low ember bloom so the section has light without a second accent -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <span class="bloom left-[-10%] top-[18%] h-[30rem] w-[30rem] bg-ember/5"></span>
+  </div>
+
+  <div class="mx-auto w-full max-w-[1400px] px-4 md:px-8">
+
+    <!-- ============================== Header ============================== -->
+    <div class="max-w-3xl" appReveal>
+      <p class="eyebrow">Experience</p>
+
+      <h2
+        id="experience-heading"
+        class="mt-6 text-[clamp(2rem,4.6vw,3.5rem)] font-medium leading-[1.02]
+               tracking-[-0.04em] text-chalk"
+      >
+        Six years inside systems people
+        <span class="italic text-chalk/92">actually depend on</span>.
+      </h2>
+
+      <p class="mt-6 max-w-[54ch] text-[1.0625rem] leading-relaxed text-ash">
+        Banking platforms serving East African markets, clinical software in
+        daily practice use, and public-sector systems where an outage is a
+        headline.
+      </p>
+    </div>
+
+    <!-- ============================== Timeline ============================== -->
+    <ol class="mt-14 md:mt-20">
+      @for (job of experience; track job.company; let i = $index; let last = $last) {
+        <li class="relative grid grid-cols-1 gap-x-8 md:grid-cols-[15rem_1fr]">
+
+          <!-- Rail cell -->
+          <div class="relative flex gap-4 md:block">
+            <!-- Connector: runs the height of the entry, stops at the last one -->
+            @if (!last) {
+              <span
+                class="absolute left-[3px] top-3 hidden h-full w-px md:block"
+                style="background: linear-gradient(to bottom, #26262c 60%, transparent)"
+                aria-hidden="true"
+              ></span>
+            }
+
+            <div class="flex items-center gap-3 md:block">
+              <!-- Node -->
+              <span
+                class="relative z-10 mt-0.5 grid size-2.5 flex-none place-items-center md:mt-2"
+                aria-hidden="true"
+              >
+                <span
+                  class="size-1.5 rounded-full transition-colors duration-500"
+                  [class.bg-ember]="job.featured"
+                  [class.bg-hairline]="!job.featured"
+                ></span>
+              </span>
+
+              <span
+                class="font-mono text-[0.66rem] uppercase tracking-[0.16em]
+                       text-smoke md:mt-4 md:block"
+              >
+                {{ job.period }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Entry card -->
+          <div class="pb-10 md:pb-12">
+            <article
+              class="bezel spotlight"
+              appReveal
+              [revealDelay]="i * 70"
+              appSpotlight
+            >
+              <div class="bezel-core !p-5 md:!p-7">
+
+                <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <h3 class="text-[1.15rem] font-medium tracking-[-0.025em] text-chalk md:text-[1.3rem]">
+                    {{ job.role }}
+                  </h3>
+
+                  @if (job.featured) {
+                    <span
+                      class="rounded-full border border-ember/25 bg-ember/8 px-2.5 py-1
+                             font-mono text-[0.58rem] uppercase tracking-[0.14em] text-ember"
+                    >
+                      Key role
+                    </span>
+                  }
+                </div>
+
+                <p class="mt-1.5 text-[0.9rem] text-ember">
+                  {{ job.company }}
+                  <span class="text-smoke"> · {{ job.location }}</span>
+                </p>
+
+                <p class="mt-4 max-w-[62ch] text-[0.9rem] leading-relaxed text-ash">
+                  {{ job.summary }}
+                </p>
+
+                <ul class="mt-5 space-y-2.5">
+                  @for (point of job.points; track $index) {
+                    <li class="flex gap-3 text-[0.875rem] leading-relaxed text-ash">
+                      <span
+                        class="mt-[0.55rem] size-1 flex-none rounded-full bg-chalk/25"
+                        aria-hidden="true"
+                      ></span>
+                      <span>{{ point }}</span>
+                    </li>
+                  }
+                </ul>
+
+                <!-- Stack chips: rectangular, matching the field radius, never pills -->
+                <ul class="mt-6 flex flex-wrap gap-1.5">
+                  @for (tech of job.stack; track tech) {
+                    <li
+                      class="rounded-[0.5rem] border border-chalk/8 bg-chalk/[0.03]
+                             px-2.5 py-1 font-mono text-[0.66rem] tracking-[0.01em] text-smoke
+                             transition-colors duration-500 hover:border-chalk/16 hover:text-ash"
+                    >
+                      {{ tech }}
+                    </li>
+                  }
+                </ul>
+              </div>
+            </article>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <!-- ============================ Education ============================ -->
+    <div class="mt-8 md:mt-12">
+      <div class="flex items-end justify-between gap-6" appReveal>
+        <h3 class="text-[1.35rem] font-medium tracking-[-0.03em] text-chalk">
+          Education & certifications
+        </h3>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        @for (item of education; track item.title + item.institution; let i = $index) {
+          <div
+            class="bezel--tight bezel h-full"
+            appReveal
+            [revealDelay]="i * 55"
+          >
+            <div class="bezel-core flex h-full flex-col gap-2 !p-5">
+              <p class="font-mono text-[0.6rem] uppercase tracking-[0.16em] text-smoke">
+                {{ item.period }}
+              </p>
+
+              <h4 class="text-[0.98rem] font-medium leading-snug tracking-[-0.02em] text-chalk">
+                {{ item.title }}
+              </h4>
+
+              <p class="text-[0.82rem] text-ember">{{ item.institution }}</p>
+
+              <p class="mt-auto pt-2 text-[0.8rem] leading-relaxed text-smoke">
+                {{ item.note }}
+              </p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</section>

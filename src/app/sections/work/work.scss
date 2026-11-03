@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+/* Cards enter and leave on filter change without a layout jump.
+   Angular's @for block re-renders the list, and the reveal directive
+   handles the entry. Nothing else needed here. */
